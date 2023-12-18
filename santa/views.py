@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import path
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets
 from rest_framework.routers import DefaultRouter
 
@@ -31,16 +31,19 @@ def index(request):
 
 
 # GET /draw
-def new_draw():
+def new_draw(request):
     # no input data, only use what's in the db
     # fetch data
     users = [u.id for u in User.objects.all()]
     exclusions = {}
     # compute draw
     draw_data: list[tuple[int, int]] = draw(users, exclusions)
-    return {
-        'pairs': draw_data,
-    }
+    draw_data = list(draw_data)
+    return JsonResponse(
+        data={
+            'pairs': draw_data,
+        },
+    )
 
 
 # GET /history

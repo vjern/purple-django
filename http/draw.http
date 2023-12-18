@@ -1,0 +1,7 @@
+@HOST = http://localhost:8080/santa
+
+GET {{HOST}}
+
+###
+
+GET {{HOST}}/draw
