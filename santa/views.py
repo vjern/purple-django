@@ -16,8 +16,14 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
+class ExclusionViewSet(viewsets.ModelViewSet):
+    queryset = Exclusion.objects.all()
+    serializer_class = ExclusionSerializer
+
+
 router = DefaultRouter()
 router.register('users', UserViewSet)
+router.register('exclusions', ExclusionViewSet)
 
 
 def index(request):
