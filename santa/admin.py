@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import User, Ban
+from .models import User, Exclusion
 
-for model in User, Ban:
+for model in User, Exclusion:
     admin.site.register(model)

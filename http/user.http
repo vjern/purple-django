@@ -1,0 +1,11 @@
+@HOST = http://localhost:8080/santa
+
+GET {{HOST}}
+
+###
+
+GET {{HOST}}/users
+
+###
+
+GET {{HOST}}/users/1
