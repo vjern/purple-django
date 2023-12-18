@@ -26,7 +26,10 @@ class DrawViewSet(viewsets.ModelViewSet):
     serializer_class = DrawSerializer
 
     def create(self, validated_data):
-        draw = new_draw()
+        try:
+            draw = new_draw()
+        except RuntimeError as err:
+            return HttpResponse(err.args[0], status=500)
         return JsonResponse(data=DrawSerializer(draw).data, status=200)
 
 
@@ -46,9 +49,7 @@ def new_draw():
     # FIXME add exclusions
     exclusions = {}
     # compute draw
-    pairs = [(1, 2)]
-    # pairs: list[tuple[int, int]] = generate_draw(users, exclusions)
-    # pairs = list(pairs)
+    pairs = generate_draw(users, exclusions)
     # Register it
     # Then register draw pairs
     draw = Draw()
