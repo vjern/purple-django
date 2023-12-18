@@ -6,9 +6,9 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets
 from rest_framework.routers import DefaultRouter
 
-from .models import User, Exclusion
-from .serializers import UserSerializer, ExclusionSerializer
-from .core.draw import draw
+from .models import User, Exclusion, Draw, DrawPair
+from .serializers import UserSerializer, ExclusionSerializer, DrawSerializer
+from .core.draw import generate_draw
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -21,33 +21,45 @@ class ExclusionViewSet(viewsets.ModelViewSet):
     serializer_class = ExclusionSerializer
 
 
+class DrawViewSet(viewsets.ModelViewSet):
+    queryset = Draw.objects.all()
+    serializer_class = DrawSerializer
+
+    def create(self, validated_data):
+        draw = new_draw()
+        return JsonResponse(data=DrawSerializer(draw).data, status=200)
+
+
 router = DefaultRouter()
 router.register('users', UserViewSet)
 router.register('exclusions', ExclusionViewSet)
+router.register('draws', DrawViewSet)
 
 
 def index(request):
     return HttpResponse("Hello, world. You're at the santa index.")
 
 
-# GET /draw
-def new_draw(request):
-    # no input data, only use what's in the db
+def new_draw():
     # fetch data
     users = [u.id for u in User.objects.all()]
+    # FIXME add exclusions
     exclusions = {}
     # compute draw
-    draw_data: list[tuple[int, int]] = draw(users, exclusions)
-    draw_data = list(draw_data)
-    return JsonResponse(
-        data={
-            'pairs': draw_data,
-        },
-    )
+    pairs = [(1, 2)]
+    # pairs: list[tuple[int, int]] = generate_draw(users, exclusions)
+    # pairs = list(pairs)
+    # Register it
+    # Then register draw pairs
+    draw = Draw()
+    draw.save()
+    for giver_id, taker_id in pairs:
+        DrawPair(draw=draw, giver=User(id=giver_id), taker=User(id=taker_id)).save()
+    return draw
 
 
 # GET /history
-def get_draw_history(n: int = 5):
+def get_draw_history(request, n: int = 5):
     # `n` as a query param
     f"""
     SELECT *
@@ -59,6 +71,7 @@ def get_draw_history(n: int = 5):
     )
     """
     # then squash it into a list of lists
+
 
 urlpatterns = [
     *router.urls,

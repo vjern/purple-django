@@ -14,7 +14,7 @@ class Draw(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 
-class DrawHistory(models.Model):
+class DrawPair(models.Model):
     draw = models.ForeignKey(Draw, on_delete=models.CASCADE)
     giver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='giver')
     taker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='taker')

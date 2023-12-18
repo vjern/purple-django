@@ -1,7 +1,13 @@
 @HOST = http://localhost:8080/santa
 
-GET {{HOST}}
+### Compute a new draw
 
-###
+POST {{HOST}}/draws/
 
-GET {{HOST}}/draw
+### List past draws
+
+GET {{HOST}}/draws
+
+### List n latest draws
+
+GET {{HOST}}/draws?latest=5

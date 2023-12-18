@@ -15,7 +15,7 @@ class Exclusion:
     target: str
 
 
-def draw(
+def generate_draw(
     users: list[UserId],
     exclusions: dict[UserId, set[UserId]],
 ) -> list[tuple[UserId, UserId]]:
@@ -42,7 +42,7 @@ def test_draw():
     users = list(range(10))
     exclusions = {0: {1, 2, 3, 4, 5, 6, 8, 9}}
 
-    res = draw(users, exclusions)
+    res = generate_draw(users, exclusions)
     res = list(res)
     print(f"{res = }")
     assert dict(res)[0] == 7
