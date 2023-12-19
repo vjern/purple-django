@@ -55,10 +55,15 @@ class DrawViewSet(viewsets.ModelViewSet):
         Add the draw and its pairs to the DB.
         """
         try:
-            draw = new_draw()
+            draw, pairs = new_draw()
         except RuntimeError as err:
             return HttpResponse(err.args[0], status=500)
-        return JsonResponse(data=DrawSerializer(draw).data, status=200)
+        data = DrawSerializer(draw).data
+        data['pairs'] = [
+            {'giver': giver, 'taker': taker}
+            for giver, taker in pairs
+        ]
+        return JsonResponse(data=data, status=200)
 
     def retrieve(self, request, *, pk):
         """
@@ -80,7 +85,7 @@ def liveness(request):
     return HttpResponse("secret-santa 1.0.0")
 
 
-def new_draw() -> Draw:
+def new_draw() -> tuple[Draw, list[DrawPair]]:
     """
     Compute a new draw from the DB users & exclusions between users
     and save it to the DB.
@@ -102,7 +107,7 @@ def new_draw() -> Draw:
             giver=User(id=giver_id),
             taker=User(id=taker_id),
         ).save()
-    return draw
+    return draw, pairs
 
 
 router = DefaultRouter()
