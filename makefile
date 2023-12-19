@@ -13,6 +13,7 @@ build:
 run: kill build
 	docker run -d \
 	-p 8080:8080 \
+	--mount type=bind,src=./db.sqlite3,target=/app/db.sqlite3 \
 	$(IMAGE)
 
 kill:

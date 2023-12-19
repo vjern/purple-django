@@ -9,7 +9,7 @@ RUN python -m pip install -r requirements.txt
 
 COPY secret_santa ./secret_santa
 COPY santa ./santa
-COPY db.sqlite3 .
+# COPY db.sqlite3 .
 
 EXPOSE 8080
 
