@@ -34,6 +34,15 @@ class DrawViewSet(viewsets.ModelViewSet):
             return HttpResponse(err.args[0], status=500)
         return JsonResponse(data=DrawSerializer(draw).data, status=200)
 
+    def retrieve(self, request, *, pk):
+        response = super().retrieve(request, pk=pk)
+        draw = Draw(id=pk)
+        response.data['pairs'] = [
+            {'giver': pair.giver.id, 'taker': pair.taker.id}
+            for pair in DrawPair.objects
+            .filter(draw=draw)
+        ]
+        return response
 
 router = DefaultRouter()
 router.register('users', UserViewSet)
