@@ -46,16 +46,21 @@ def index(request):
 def new_draw():
     # fetch data
     users = [u.id for u in User.objects.all()]
-    # FIXME add exclusions
-    exclusions = {}
-    # compute draw
+    exclusions = defaultdict(set)
+    for exc in Exclusion.objects.all():
+        exclusions[exc.recipient.id].add(exc.target.id)
+    # compute new santa draw
     pairs = generate_draw(users, exclusions)
     # Register it
-    # Then register draw pairs
     draw = Draw()
     draw.save()
+    # Then register draw pairs
     for giver_id, taker_id in pairs:
-        DrawPair(draw=draw, giver=User(id=giver_id), taker=User(id=taker_id)).save()
+        DrawPair(
+            draw=draw,
+            giver=User(id=giver_id),
+            taker=User(id=taker_id)
+        ).save()
     return draw
 
 
