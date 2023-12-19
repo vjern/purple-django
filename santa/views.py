@@ -28,6 +28,11 @@ class DrawViewSet(viewsets.ModelViewSet):
     serializer_class = DrawSerializer
 
     def list(self, request):
+        """
+        List contents of table `draw`.
+        Optional query param `latest` (int) allows to retrieve only the n latest
+        draws.
+        """
         queryset = Draw.objects.all()
         # Parse `latest` query param
         latest = request.query_params.get('latest', 0)
@@ -45,6 +50,10 @@ class DrawViewSet(viewsets.ModelViewSet):
         )
 
     def create(self, validated_data):
+        """
+        Create a draw from the DB's contents. No input data is required.
+        Add the draw and its pairs to the DB.
+        """
         try:
             draw = new_draw()
         except RuntimeError as err:
@@ -52,6 +61,11 @@ class DrawViewSet(viewsets.ModelViewSet):
         return JsonResponse(data=DrawSerializer(draw).data, status=200)
 
     def retrieve(self, request, *, pk):
+        """
+        We extend the default behavior of `ModelViewSet.retrieve` to retrieve
+        the list of pairs as well as the draw object metadata.
+        This is the only way to retrieve the full data of a draw object.
+        """
         response = super().retrieve(request, pk=pk)
         draw = Draw(id=pk)
         response.data['pairs'] = [
@@ -62,10 +76,15 @@ class DrawViewSet(viewsets.ModelViewSet):
 
 
 def liveness(request):
+    """Simple liveness endpoint."""
     return HttpResponse("secret-santa 1.0.0")
 
 
 def new_draw() -> Draw:
+    """
+    Compute a new draw from the DB users & exclusions between users
+    and save it to the DB.
+    """
     # fetch data
     users: list[int] = [u.id for u in User.objects.all()]
     exclusions: dict[int, set[int]] = defaultdict(set)
@@ -90,4 +109,3 @@ router = DefaultRouter()
 router.register('users', UserViewSet)
 router.register('exclusions', ExclusionViewSet)
 router.register('draws', DrawViewSet)
-
