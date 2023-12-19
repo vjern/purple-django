@@ -1,6 +1,6 @@
 # Secret Santa API
 
-Compute a secret santa list from a DB of users and exclusions between users.
+Compute a secret santa list (shortened as "draw" ~= tirage au sort) from a DB of users and exclusions between users.
 
 ## Available features
 
