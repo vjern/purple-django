@@ -40,7 +40,7 @@ router.register('draws', DrawViewSet)
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the santa index.")
+    return HttpResponse("secret-santa 1.0.0")
 
 
 def new_draw():
