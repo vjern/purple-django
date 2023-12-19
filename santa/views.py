@@ -27,6 +27,22 @@ class DrawViewSet(viewsets.ModelViewSet):
     queryset = Draw.objects.all()
     serializer_class = DrawSerializer
 
+    def list(self, request):
+        queryset = Draw.objects.all()
+        latest = request.query_params.get('latest', 0)
+        try:
+            latest = int(latest)
+        except ValueError:
+            return HttpResponse("'latest' query param must be an integer", status=400)
+        if latest:
+            queryset = queryset.order_by('-timestamp')[:latest]
+        data = DrawSerializer(queryset, many=True).data
+        # data = list(map(dict, data))
+        print(f"{data = }")
+        return JsonResponse(
+            data=data, status=200, safe=False
+        )
+
     def create(self, validated_data):
         try:
             draw = new_draw()
@@ -73,21 +89,6 @@ def new_draw():
             taker=User(id=taker_id)
         ).save()
     return draw
-
-
-# GET /history
-def get_draw_history(request, n: int = 5):
-    # `n` as a query param
-    f"""
-    SELECT *
-    FROM draw_history
-    WHERE draw IN (
-        SELECT id FROM draw
-        ORDER BY timestamp
-        LIMIT {n}
-    )
-    """
-    # then squash it into a list of lists
 
 
 urlpatterns = [

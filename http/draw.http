@@ -8,6 +8,10 @@ POST {{HOST}}/draws/
 
 GET {{HOST}}/draws
 
+### Get draw detail
+
+GET {{HOST}}/draws/5
+
 ### List n latest draws
 
 GET {{HOST}}/draws?latest=5
