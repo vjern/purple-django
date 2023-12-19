@@ -30,7 +30,6 @@ def generate_draw(
             attempts -= 1
             target_idx_idx = random.randrange(len(pool))
             target_idx = pool[target_idx_idx]
-            print(target_idx)
         pool.pop(target_idx_idx)
         pairs.append((u, users[target_idx]))
     return pairs
