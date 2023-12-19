@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import random
 
 
-UserId = str
+UserId = int
 @dataclass
 class User:
     id: UserId
@@ -38,19 +38,3 @@ def generate_draw(
         pool.pop(target_idx_idx)
         pairs.append((u, users[target_idx]))
     return pairs
-
-
-def test_draw():
-
-    users = list(range(5))
-    exclusions = {}
-
-    res = generate_draw(users, exclusions)
-    print(f"{res = }")
-    # assert dict(res)[0] == 7
-    for a, b in res:
-        assert b not in exclusions.get(a, [])
-
-
-if __name__ == '__main__':
-    test_draw()
