@@ -6,13 +6,19 @@
 #
 asgiref==3.7.2
     # via django
+click==8.1.7
+    # via uvicorn
 django==5.0
     # via
     #   -r requirements.in
     #   djangorestframework
 djangorestframework==3.14.0
     # via -r requirements.in
+h11==0.14.0
+    # via uvicorn
 pytz==2023.3.post1
     # via djangorestframework
 sqlparse==0.4.4
     # via django
+uvicorn==0.24.0.post1
+    # via -r requirements.in
