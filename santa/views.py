@@ -100,7 +100,7 @@ def new_draw() -> Draw:
         DrawPair(
             draw=draw,
             giver=User(id=giver_id),
-            taker=User(id=taker_id)
+            taker=User(id=taker_id),
         ).save()
     return draw
 

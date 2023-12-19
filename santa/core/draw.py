@@ -18,9 +18,7 @@ def generate_draw(
     for i, u in enumerate(users):
         # draw another user as target of secret santa
         if not pool:  # no more users to draw from
-            raise RuntimeError(
-                "Pool to draw from is empty, try again or loosen exclusions"
-            )
+            raise RuntimeError("Pool to draw from is empty, try again or loosen exclusions")
         target_idx = i
         attempts = 100
         # TODO and also you can't be the target of someone you have in your own blacklist
