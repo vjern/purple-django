@@ -124,3 +124,44 @@ You need to use `pytest` to run the tests found in `tests`:
 ```
 python -m pytest tests -vv
 ```
+
+## Models
+
+- A `User` is a person with simply a name;
+- An `Exclusion` tells us who (`target`) should not appear as the person to give a secret santa gift to for another person (`recipient`);
+- A `Draw` is a secret santa list. It has a  creation datetimestamp;
+- A `DrawPair` is a user pair inside a draw. It refers to its parent draw (`draw`) and the two users (`giver` and `taker` of the gift).
+
+To generate a new secret santa list == a draw, we list all users and compute the user blacklist for each user (user id -> collection of user ids) from the list of exclusion rows. We then generate a list of random pairs where each user must be exactly once giver and taker, but not in the same pair, while following exclusions.
+
+The result is a list of user id pairs belonging to one `Draw`, which we turn into `DrawPair` rows.
+
+To deliver the full details of a draw, we scan the `draw_pair` table for rows pointing to this draw and return the list together with the draw's metadata.
+
+```mermaid
+classDiagram
+    User <|-- Exclusion : recipient
+    User <|-- Exclusion : target
+    User <|-- DrawPair : giver
+    User <|-- DrawPair : taker
+    Draw <|-- DrawPair : draw
+    class User {
+        int id
+        String name
+    }
+    class Exclusion {
+        int id
+        User recipient
+        User target
+    }
+    class Draw {
+        int id
+        Date timestamp
+    }
+    class DrawPair {
+        int id
+        Draw draw
+        User giver
+        User taker
+    }
+```
