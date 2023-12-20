@@ -11,7 +11,7 @@ Compute a secret santa list (shortened as "draw" ~= tirage au sort) from a DB of
 
 ## Repo structure
 
-`http` contains HTTP request examples. You can run them against a hostname with various IDE extensions (eg [VS Code Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)).
+`http` contains HTTP request examples as [http-request](https://www.jetbrains.com/help/idea/exploring-http-syntax.html) files. You can run them against a hostname with various IDE extensions (eg [VS Code Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)).
 
 ## Build & Run
 
