@@ -60,6 +60,8 @@ To compute a new draw:
 POST /santa/draws/
 ```
 
+Keep in mind that this may fail as the drawing algorithm is not foolproof, in which case you should retry it.
+
 ### List draws
 
 To return the metadata of all draws, do:
