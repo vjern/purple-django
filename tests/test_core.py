@@ -12,8 +12,14 @@ import pytest
     ]
 )
 def test_draw(users, exclusions):
-
+    targets = set()
+    recipients = set()
     res = generate_draw(users, exclusions)
     print(f"{res = }")
     for a, b in res:
         assert b not in exclusions.get(a, [])
+        assert a != b
+        assert b not in targets
+        assert a not in recipients
+        targets.add(b)
+        recipients.add(a)
