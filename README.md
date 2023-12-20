@@ -116,3 +116,11 @@ GET /santa/draws?latest=5
 ```
 
 To see their user pairs, you will need to call `GET /santa/draws/{id}` for each of them.
+
+## Core logic tests
+
+You need to use `pytest` to run the tests found in `tests`:
+
+```
+python -m pytest tests -vv
+```
